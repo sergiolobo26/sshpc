@@ -8,7 +8,7 @@ endef
 # sample makefile
 CC = gcc
 CXX = g++
-CFLAGS = -g -O3 -fopenmp -Wall -std=c99 -w
+CFLAGS = -g -O3 -acc -Wall -std=c99 -w
 FLAGS = -g -O3 -Wall
 LIBS = -lm
 
