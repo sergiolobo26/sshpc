@@ -75,11 +75,25 @@ int main(int argc, char** argv){
 	// Check out the Times!
 	//
 
+    my_prec *w;
+
+    w = CREATE_MATRIX(const unsigned int a = 128, const unsigned int b = 1);
+    y = CREATE_MATRIX(const unsigned int a = 512, const unsigned int b = 1);
+    #pragma acc data create(dataMatrix)
+    {
+    #pragma acc kernels
+    for (int i = 0; i < 3; ++i)
+    {
+    	SetMatrixRandom(dataMatrix, size_data, size_X);
+    	SetMatrixRandom(y, size_data, size_X);
+    	GradientDescent(dataMatrix, w, y)
+    }
+
+    }
+
 	// Finally, we clean the memory stack as suggested
 	// from arrays.c
 	free(dataMatrix[0]);
 	free(dataMatrix), dataMatrix = NULL;
-
-	// End
 	return 0;
 }

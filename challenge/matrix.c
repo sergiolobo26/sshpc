@@ -20,6 +20,77 @@ void SetMatrixRandom(my_prec **A,unsigned int rows, unsigned int cols){
 };
 
 // Matrix Transpose Code
+
+my_prec ComputeError_i(my_prec *restrict w, my_prec *restrict x_i, my_prec y_i){
+
+    my_prec error;
+
+    my_prec dot_product = 0;
+
+    for (int i = 0; i < 128; ++i)
+    {
+    	dot_product += w[i]*x_i[i];
+    }
+
+    error = dot_product - y_i;
+    return error;
+}
+
+void GradientDescent(my_prec **data, my_prec *restrict w, my_prec *restrict y){
+
+	//output = array with all the w for the 9000 iteration
+    
+    const int size = 512;
+    my_prec *dw;
+    const float learning_rate = 0.1;
+    const unsigned int a = 128;
+    dw = CREATE_ARRAY(a);
+
+    int l;
+    int i;
+    my_prec e_i;
+    
+
+        float derivative;
+
+
+        for (l = 0; l < a; ++l)
+        {
+    	    dw[l] = 0;
+        }
+        while(derivative > 10){
+            
+            derivative = 0;
+            
+        	for (int j = 0; j < size; ++j)
+        	{
+        		 
+        		e_i = ComputeError_i(w, data[j], y[j]);
+
+        		for (int k = 0; k < a; ++k)
+        		{
+        			//dw = 2/N * sum(e(w)*x_i)
+        			dw[k] += 0.00390625*e_i*data[j][k];
+
+        		}
+            }
+        
+            for (int g = 0; g < 128; ++g)
+            {
+            	w[g] -= dw[g]*learning_rate;
+            	derivative += pow(dw[g], 2);
+            }
+            derivative = sqrt(derivative);
+        }
+
+	
+
+
+
+}
+
+
+
 // Matrix Multiply Code
 // Matrix Inversion Code
 
@@ -30,7 +101,6 @@ void SetMatrixRandom(my_prec **A,unsigned int rows, unsigned int cols){
 // Collect R^2
 // Compute p values
 // Compute T test and F test
-
 
 /*
 
